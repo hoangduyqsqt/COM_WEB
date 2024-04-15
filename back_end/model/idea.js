@@ -29,11 +29,12 @@ const IdeaSchema = new mongoose.Schema(
       ref: "Category",
       required: false,
     },
-    documentLink: { type: String },
+    documentLink: [{ type: String }],
     user: { type: mongoose.Types.ObjectId, ref: "Users" },
     reactions: [ReactionSchema],
     comments: [CommentSchema],
     isAnonymous: { type: Boolean, default: false },
+    isApprove: { type: Boolean, default: false },
     viewCount: { type: Number, default: 0 },
     department: { type: String, required: true },
     academy: {

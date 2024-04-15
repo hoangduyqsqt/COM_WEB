@@ -6,6 +6,7 @@ import magazine from ".";
 import Button from "../../components/button";
 import { IdentificationIcon } from "@heroicons/react/solid";
 import IdeaItem from "../../components/IdeaItem";
+import { roles } from "../../constants/role";
 const MagazineDatailPage = ({ getNewTokenRequest, authenticateReducer }) => {
   const [magazineDetail, setMagazineDetail] = useState({});
   const { token, user } = authenticateReducer;
@@ -16,6 +17,7 @@ const MagazineDatailPage = ({ getNewTokenRequest, authenticateReducer }) => {
       const { data, status } = await getMagazineById(token, id);
       if (status === 200) {
         setMagazineDetail(data);
+        console.log(data);
       }
     }
   }, [id, token, user._id]);
@@ -28,14 +30,16 @@ const MagazineDatailPage = ({ getNewTokenRequest, authenticateReducer }) => {
         <div className="container max-w-xl md:max-w-screen-lg mx-auto bg-white border shadow-sm px-4 py-3 rounded-lg">
           <div className="flex items-center justify-between">
             <h3 className="font-bold my-2 text-2xl">{magazineDetail.name}</h3>
-            <Button
-              icon={IdentificationIcon}
-              type="primary"
-              title="Assign"
-              onClick={(e) =>
-                navigate(`/contribute?magazineId=${magazineDetail._id}`)
-              }
-            />
+            {user?.role === roles.STUDENT && (
+              <Button
+                icon={IdentificationIcon}
+                type="primary"
+                title="Assign"
+                onClick={(e) =>
+                  navigate(`/contribute?magazineId=${magazineDetail._id}`)
+                }
+              />
+            )}
           </div>
           <div>
             <div className="text-gray-500 text-xs ">
@@ -56,21 +60,25 @@ const MagazineDatailPage = ({ getNewTokenRequest, authenticateReducer }) => {
           <div className="w-full px-2 max-h-96 overflow-y-auto">
             <ul className="px-5 py-2">
               {magazineDetail.ideas &&
-                magazineDetail.ideas.map((idea) => (
-                  <IdeaItem
-                    title={idea.title}
-                    description={idea.description}
-                    key={idea._id}
-                    id={idea._id}
-                    date={idea.createdAt}
-                    commentCount={idea.comments.length}
-                    like={idea.reactions.length}
-                    view={idea?.viewCount | 0}
-                    academyId={idea.academy}
-                    authenticateReducer={authenticateReducer}
-                    getNewTokenRequest={getNewTokenRequest}
-                  />
-                ))}
+                magazineDetail?.ideas.map(
+                  (idea) =>
+                    idea.isApprove && (
+                      <IdeaItem
+                        title={idea.title}
+                        description={idea.description}
+                        key={idea._id}
+                        id={idea._id}
+                        date={idea.createdAt}
+                        commentCount={idea.comments.length}
+                        like={idea.reactions.length}
+                        view={idea?.viewCount | 0}
+                        isApprove={idea.isApprove || true}
+                        academyId={idea.academy}
+                        authenticateReducer={authenticateReducer}
+                        getNewTokenRequest={getNewTokenRequest}
+                      />
+                    )
+                )}
             </ul>
           </div>
         </div>

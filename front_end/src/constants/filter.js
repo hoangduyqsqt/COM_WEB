@@ -7,4 +7,5 @@ export const filters = {
   DATE_ASC: "DATE_ASC",
   DATE_DESC: "DATE_DESC",
   MY_IDEA: "MY_IDEA",
+  APPROVE: "APPROVE",
 };
