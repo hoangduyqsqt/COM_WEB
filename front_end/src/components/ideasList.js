@@ -8,8 +8,6 @@ import {
 } from "../apiServices/index";
 import { connect } from "react-redux";
 import { getNewToken } from "../store/actions/authenticateAction";
-import { roles } from "../constants/role";
-import { useLocation } from "react-router-dom";
 
 const IdeaList = ({ authenticateReducer, getNewTokenRequest }) => {
   const [pages, setPages] = useState(1);
@@ -17,10 +15,6 @@ const IdeaList = ({ authenticateReducer, getNewTokenRequest }) => {
   const [ideas, setIdeas] = useState([]);
   const [filterOption, setFilterOption] = useState(filters.MY_IDEA);
   const { token, user } = authenticateReducer;
-
-  const { search } = useLocation();
-  const params = new URLSearchParams(search);
-  const approveValue = params.get("approve");
 
   const getAllIdeas = useCallback(async () => {
     if (user?.role === roles.MARKETING_COORDINATOR) {

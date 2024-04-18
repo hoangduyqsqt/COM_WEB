@@ -164,22 +164,13 @@ const getIdeaById = async (id) => {
 
 const editIdea = async (id, editIdeaItem) => {
   try {
-    const { title, description, documentLink, isApprove } = editIdeaItem;
-    console.log(editIdeaItem);
-    let idea;
-    if (isApprove) {
-      idea = await IdeaModel.findOneAndUpdate(
-        { _id: id },
-        { $set: { isApprove } },
-        { new: true }
-      );
-    } else {
-      idea = await IdeaModel.findOneAndUpdate(
-        { _id: id },
-        { $set: { title, description, documentLink } },
-        { new: true }
-      );
-    }
+    const { title, description, documentLink } = editIdeaItem;
+
+    const idea = await IdeaModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { title, description, documentLink } },
+      { new: true }
+    );
 
     if (!idea) {
       throw new Error("Idea not found");
