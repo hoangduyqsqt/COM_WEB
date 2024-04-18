@@ -24,7 +24,6 @@ const IdeaList = ({ authenticateReducer, getNewTokenRequest }) => {
 
   const getAllIdeas = useCallback(async () => {
     if (user?.role === roles.MARKETING_COORDINATOR) {
-      console.log(approveValue);
       setFilterOption(filters.APPROVE);
     }
     const getAllData = async () => {
@@ -56,6 +55,10 @@ const IdeaList = ({ authenticateReducer, getNewTokenRequest }) => {
 
   const prevPage = () => {
     setCurrPage((prev) => prev - 1);
+  };
+
+  const handleItemClick = () => {
+    getAllIdeas();
   };
 
   useEffect(() => {
@@ -102,6 +105,8 @@ const IdeaList = ({ authenticateReducer, getNewTokenRequest }) => {
               academyId={item.academy?.name}
               magazine={item.magazine?.name}
               token={token}
+              user={user}
+              onItemClick={handleItemClick}
             />
           ))}
         </ul>
